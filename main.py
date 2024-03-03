@@ -34,7 +34,6 @@ operations = [operation for operation in json_file if operation.get('id')] # п�
 operations = sorted(operations, key=lambda operation: dt.strptime(operation['date'], '%Y-%m-%dT%H:%M:%S.%f'),
                     reverse=True)[:5] # сортируем по дате
 
-
 for operation in operations:
     if operation.get('id'): # проверяем существование операции (мы не попадёмся на ваши пустые записи {} !!!)
         operation['date'] = dt.strptime(operation['date'], '%Y-%m-%dT%H:%M:%S.%f')
