@@ -1,5 +1,8 @@
 import json
-import datetime
+from datetime import datetime as dt
+
+def get_date(x, format="%Y-%m-%dT%H:%M:%S.%f"):
+    return dt.strptime(x.get("date"), format)
 
 
 def print_bank_account(operation_from):
@@ -28,7 +31,11 @@ def print_bank_account(operation_from):
 
 
 with open('operations.json', encoding='UTF-8') as file:
-    operations = json.load(file) # открываем файл и считываем значение
+    json_file = json.load(file) # открываем файл и считываем значение
+
+operations = [operation for operation in json_file if operation.get('id')] # получаем новый список БЕЗ пустого объекта
+operations = sorted(operations, key=lambda operation: dt.strptime(operation['date'], '%Y-%m-%dT%H:%M:%S.%f'),
+                    reverse=True)[:5] # сортируем по дате
 
 
 for operation in operations:
@@ -38,12 +45,10 @@ for operation in operations:
             print_bank_account(operation['from'])
             print("->", end=' ')
             print_bank_account(operation['to'])
-            print(f"{operation['operationAmount']['amount']} {operation['operationAmount']['currency']['name']}\n")
+            print(f"\n{operation['operationAmount']['amount']} {operation['operationAmount']['currency']['name']}\n")
 
         else:
             print(f"{operation['date']} {operation['description']}")
             print_bank_account(operation['to'])
-            print(f"{operation['operationAmount']['amount']} {operation['operationAmount']['currency']['name']}\n")
-
-
+            print(f"\n{operation['operationAmount']['amount']} {operation['operationAmount']['currency']['name']}\n")
 
