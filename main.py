@@ -1,9 +1,6 @@
 import json
 from datetime import datetime as dt
 
-def get_date(x, format="%Y-%m-%dT%H:%M:%S.%f"):
-    return dt.strptime(x.get("date"), format)
-
 
 def print_bank_account(operation_from):
     '''
@@ -52,4 +49,3 @@ for operation in operations:
             print(f"{operation['date'].strftime('%d.%m.%Y')} {operation['description']}")
             print_bank_account(operation['to'])
             print(f"\n{operation['operationAmount']['amount']} {operation['operationAmount']['currency']['name']}\n")
-
