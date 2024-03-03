@@ -40,15 +40,16 @@ operations = sorted(operations, key=lambda operation: dt.strptime(operation['dat
 
 for operation in operations:
     if operation.get('id'): # проверяем существование операции (мы не попадёмся на ваши пустые записи {} !!!)
+        operation['date'] = dt.strptime(operation['date'], '%Y-%m-%dT%H:%M:%S.%f')
         if operation.get('from'): # отправителя может и не быть, т.к. есть операции по открытию счетов
-            print(f"{operation['date']} {operation['description']}") # ну а дальше вывод
+            print(f"{operation['date'].strftime('%d.%m.%Y')} {operation['description']}") # ну а дальше вывод
             print_bank_account(operation['from'])
             print("->", end=' ')
             print_bank_account(operation['to'])
             print(f"\n{operation['operationAmount']['amount']} {operation['operationAmount']['currency']['name']}\n")
 
         else:
-            print(f"{operation['date']} {operation['description']}")
+            print(f"{operation['date'].strftime('%d.%m.%Y')} {operation['description']}")
             print_bank_account(operation['to'])
             print(f"\n{operation['operationAmount']['amount']} {operation['operationAmount']['currency']['name']}\n")
 
